@@ -1,24 +1,103 @@
 import logo from './logo.svg';
 import './App.css';
-
+import { useState } from 'react';
 function App() {
+
+  let [set, sset] = useState();
+  let [aset, asset] = useState();
+  let [ans, setans] = useState([]);
+  let array = [],array1=[],slotearry = [],fm=[],sm=[];
+  let hslot, mslot, tslot,h,m;
+
+  const slot = () => {
+    array = set.split(':');
+    array1 = aset.split(':');
+
+    fm=array[1].split('');
+    sm=array1[1].split('');
+      
+    if (parseInt(array[0]) > parseInt(array1[0])) {
+
+      h = parseInt(array[0]) - parseInt(array1[0]);
+      h = 12 - h;
+      if (parseInt(array[0]) == parseInt(array1[0])) {
+        h = 0;
+      }
+    } else {
+      h = (parseInt(array1[0]) - parseInt(array[0]));
+    }
+    
+    if(array[1]>array1[1]){
+      m=(parseInt(array[1]) - parseInt(array1[1]))
+    }
+    else{
+      m=(parseInt(array1[1]) - parseInt(array[1]))
+    }
+
+    hslot = (h * 6);
+    if(0<m){
+      mslot = (m / 10);
+    }
+    else{
+      mslot=0;
+    }
+    if(array[1]>array1[1]){
+      tslot =  hslot-mslot;      
+    }
+    else{
+      tslot =  hslot+mslot;
+    }
+
+     if(fm[1]!=sm[1]){
+        tslot=tslot+1;
+      }
+    
+
+    for (var i = 0; i <=tslot; i++) {
+      slotearry[i] = array[0] + ":" + array[1];
+
+      array[1] = parseInt(array[1]) + parseInt(10);
+       
+      if (array[1] >= 60) {
+        array[1] = array[1] - 60;
+        array[0] = parseInt(array[0]) + parseInt(1);
+        if (array[1] <= 9) {
+          array[1] = "0" + array[1];
+        }
+
+      }
+      if(array[0]>12){
+        array[0]=1;
+      }
+    }
+
+    setans(slotearry);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <input type="text" placeholder="Enter Time" onChange={(e) => sset(e.target.value)}></input><br></br>
+      <input type="text" placeholder="Enter Time" onChange={(e) => asset(e.target.value)}></input>
+      <input type='button' value="slot" onClick={slot}></input>
+      <table border={1}>
+        <thead>
+          <tr>
+            <th>Total Slots</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ans.map((ele, ind) => {
+              return (
+                <tr>
+                  <td key={ind}>{ele}</td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+    </>
   );
 }
 
